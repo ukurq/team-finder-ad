@@ -1,14 +1,23 @@
+import shutil
+import tempfile
 import json
 
 from django.contrib.auth import get_user_model
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from .models import Project, Skill
 
 User = get_user_model()
 
+TEMP_MEDIA = tempfile.mkdtemp()
 
+
+def tearDownModule():
+    shutil.rmtree(TEMP_MEDIA, ignore_errors=True)
+
+
+@override_settings(MEDIA_ROOT=TEMP_MEDIA)
 class ProjectsTestBase(TestCase):
     def setUp(self):
         self.owner = User.objects.create_user(

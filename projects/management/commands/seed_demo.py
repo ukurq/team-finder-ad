@@ -12,9 +12,24 @@ USERS = [
 ]
 
 PROJECTS = [
-    ("anna@example.com", "TeamFinder", "Платформа поиска команды для pet-проектов.", ["Python", "Django"]),
-    ("boris@example.com", "Трекер привычек", "Мобильное веб-приложение для привычек.", ["JavaScript", "CSS"]),
-    ("vera@example.com", "Прогноз погоды", "Модель прогноза по открытым данным.", ["Python", "Pandas"]),
+    (
+        "anna@example.com",
+        "TeamFinder",
+        "Платформа поиска команды для pet-проектов.",
+        ["Python", "Django"],
+    ),
+    (
+        "boris@example.com",
+        "Трекер привычек",
+        "Мобильное веб-приложение для привычек.",
+        ["JavaScript", "CSS"],
+    ),
+    (
+        "vera@example.com",
+        "Прогноз погоды",
+        "Модель прогноза по открытым данным.",
+        ["Python", "Pandas"],
+    ),
 ]
 
 

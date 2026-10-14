@@ -1,35 +1,10 @@
 import re
-from urllib.parse import urlparse
 
 from django import forms
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.password_validation import validate_password
 
 User = get_user_model()
-
-PHONE_RE = re.compile(r"^(?:\+7|8)\d{10}$")
-
-
-def normalize_phone(value):
-    value = re.sub(r"[\s\-()]", "", value or "")
-    if not value:
-        return ""
-    if not PHONE_RE.match(value):
-        raise forms.ValidationError(
-            "Телефон должен быть в формате 8XXXXXXXXXX или +7XXXXXXXXXX."
-        )
-    if value.startswith("8"):
-        value = "+7" + value[1:]
-    return value
-
-
-def validate_github_url(value):
-    if not value:
-        return value
-    host = (urlparse(value).hostname or "").lower()
-    if host not in ("github.com", "www.github.com"):
-        raise forms.ValidationError("Укажите ссылку на GitHub (github.com).")
-    return value
 
 
 class RegisterForm(forms.ModelForm):
@@ -93,7 +68,8 @@ class ProfileForm(forms.ModelForm):
         widgets = {"about": forms.Textarea(attrs={"rows": 4})}
 
     def clean_phone(self):
-        return normalize_phone(self.cleaned_data.get("phone"))
-
-    def clean_github_url(self):
-        return validate_github_url(self.cleaned_data.get("github_url"))
+        """Приводит телефон к виду +7XXXXXXXXXX, формат проверяет валидатор модели."""
+        phone = re.sub(r"[\s\-()]", "", self.cleaned_data.get("phone") or "")
+        if phone.startswith("8"):
+            phone = "+7" + phone[1:]
+        return phone
